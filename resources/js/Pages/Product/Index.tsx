@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import GuestLayout from '@/Layouts/GuestLayout'
 import axios from 'axios'
 import { Image, Input, List, Space } from 'antd'
@@ -55,14 +55,16 @@ interface Response {
 }
 
 export default function Index() {
+    const [searchTerm, setSearchTerm] = useState('');
+
     const fetchProducts = async (): Promise<Response> => {
-      const response = await axios.get('/products')
+      const response = await axios.get('/products/search', { params: { q: searchTerm } })
 
       return response.data
     }
 
     const { data, isLoading } = useQuery({
-      queryKey: ['productsData'],
+      queryKey: ['productsData', { searchTerm }],
       queryFn: fetchProducts
     })
 
@@ -75,13 +77,17 @@ export default function Index() {
 
     return (
         <GuestLayout>
-          <Input.Search placeholder='Search for products' />
+          <Input.Search
+            placeholder='Search for products'
+            allowClear
+            onSearch={(value) => setSearchTerm(value)}
+          />
           <List
             className='mt-4'
             itemLayout='vertical'
             size='large'
             pagination={{
-              pageSize: 10
+              pageSize: 7
             }}
             loading={isLoading}
             dataSource={data?.products}
