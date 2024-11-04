@@ -8,7 +8,7 @@ Requirements:
 ### Installing the dependencies
 Once the the requirements are installed, you should run `composer install` to install dependencies for **Laravel**
 
-Then, create a `.env` file in the root folder of this project and copy the contents from `.env.example` into it and save.
+Then, run `composer run post-root-package-install` to setup the env file for your local setup.
 
 Next, run `composer run post-create-project-cmd` to run the final setup for Laravel.
 
